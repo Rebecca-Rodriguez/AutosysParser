@@ -1,0 +1,71 @@
+/* =========================
+   Sample Autosys Job: Full Feature
+   ========================= */
+
+/* Parent box job */
+insert_job: Sample_Box_Job    job_type: BOX
+description: "This is a sample box job that contains multiple child jobs"
+box_success: all
+box_failure: any
+owner: becca@example.com
+permission: gx,ge
+machine: server01.company.com
+timezone: "EST"
+date_conditions: 1
+days_of_week: mo,tu,we,th,fr
+start_times: "09:00,14:00"
+run_calendar: Workdays
+max_run_alarm: 30
+alarm_if_fail: 1
+std_out_file: /var/log/autosys/Sample_Box_Job.out
+std_err_file: /var/log/autosys/Sample_Box_Job.err
+term_run_time: 3600
+max_exit_success: 1
+max_exit_failure: 1
+notification_emailaddress: becca@example.com
+notification_subject: "Box Job Status: Sample_Box_Job"
+notification_on_success: 1
+notification_on_failure: 1
+description: "A full-featured sample box job in Autosys"
+profile: /etc/profile
+priority: 5
+n_retrys: 2
+retry_interval: 10
+watch_file: /tmp/watchfile.txt
+watch_file_minute_interval: 5
+exclude_calendar: Holidays
+condition: s(Preceding_Job)
+term_run_time: 3600
+
+/* Child command job */
+insert_job: Sample_Command_Job    job_type: CMD
+box_name: Sample_Box_Job
+command: /usr/local/bin/sample_script.sh -param value
+description: "This is a child command job under the box job"
+owner: becca@example.com
+permission: gx,ge
+machine: server01.company.com
+timezone: "EST"
+date_conditions: 1
+days_of_week: mo,tu,we,th,fr
+start_times: "09:05,14:05"
+run_calendar: Workdays
+condition: s(Another_Job)
+max_run_alarm: 30
+alarm_if_fail: 1
+std_out_file: /var/log/autosys/Sample_Command_Job.out
+std_err_file: /var/log/autosys/Sample_Command_Job.err
+term_run_time: 1800
+max_exit_success: 1
+max_exit_failure: 1
+notification_emailaddress: becca@example.com
+notification_subject: "Command Job Status: Sample_Command_Job"
+notification_on_success: 1
+notification_on_failure: 1
+profile: /etc/profile
+priority: 7
+n_retrys: 3
+retry_interval: 15
+watch_file: /tmp/child_watchfile.txt
+watch_file_minute_interval: 2
+exclude_calendar: Holidays
