@@ -87,7 +87,7 @@ public class JobParser {
                             currentJob.setEmailAddress(value);
                             break;
                         case "notification_subject":
-                            currentJob.setEmailSubject(value);
+                            currentJob.setEmailMessage(value);
                             break;
                     }
                 }

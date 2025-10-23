@@ -21,6 +21,7 @@ public class ExcelWriter {
             header.createCell(3).setCellValue("Command");
             header.createCell(4).setCellValue("Machine");
             header.createCell(5).setCellValue("Owner");
+            header.createCell(5).setCellValue("Permission");
             header.createCell(6).setCellValue("Date Conditions");
             int rowNum = 1;
             for (AutosysJob job : jobs) {

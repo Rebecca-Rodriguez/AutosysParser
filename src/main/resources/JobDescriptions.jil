@@ -2,7 +2,7 @@
    Sample Autosys Job: Full Feature
    ========================= */
 
-/* Parent box job */
+/* ---------------- Parent box job ---------------- */
 insert_job: Sample_Box_Job    job_type: BOX
 description: "This is a sample box job that contains multiple child jobs"
 box_success: all
@@ -37,7 +37,8 @@ exclude_calendar: Holidays
 condition: s(Preceding_Job)
 term_run_time: 3600
 
-/* Child command job */
+
+/* ---------------- Sample_Command_Job ---------------- */
 insert_job: Sample_Command_Job    job_type: CMD
 box_name: Sample_Box_Job
 command: /usr/local/bin/sample_script.sh -param value
@@ -69,3 +70,31 @@ retry_interval: 15
 watch_file: /tmp/child_watchfile.txt
 watch_file_minute_interval: 2
 exclude_calendar: Holidays
+
+
+/* ---------------- Sample_Full_CMD_Job ---------------- */
+insert_job: Sample_Full_CMD_Job   job_type: CMD
+command: /usr/local/bin/process_data.sh
+machine: server01.prod.local
+owner: becca@example.com
+permission: gx,ge,mx,me
+date_conditions: 1
+days_of_week: mo,tu,we,th,fr
+start_mins: 00,30
+run_window: 06:00-18:00
+condition: s(Dependency_Job_Success)
+description: "Comprehensive CMD job for Autosys parser testing"
+std_out_file: /logs/autosys/Sample_Full_CMD_Job.out
+std_err_file: /logs/autosys/Sample_Full_CMD_Job.err
+max_run_alarm: 60
+alarm_if_fail: 1
+profile: /home/becca/.bash_profile
+alarm_if_terminated: 1
+timezone: US/Eastern
+group: DATA_ETL
+application: SalesProcessing
+send_notification: 1
+notification_msg: "Job Sample_Full_CMD_Job has completed."
+envvars: "ENV=PROD,REGION=US"
+notification_emailaddress: becca@example.com,devops@example.com
+
