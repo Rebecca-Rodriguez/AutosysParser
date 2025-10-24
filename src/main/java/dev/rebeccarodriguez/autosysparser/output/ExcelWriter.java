@@ -6,7 +6,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ExcelWriter {
 
@@ -14,25 +16,34 @@ public class ExcelWriter {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Autosys Jobs");
 
-            Row header = sheet.createRow(0);
-            header.createCell(0).setCellValue("Job Name");
-            header.createCell(1).setCellValue("Job Type");
-            header.createCell(2).setCellValue("Box Name");
-            header.createCell(3).setCellValue("Command");
-            header.createCell(4).setCellValue("Machine");
-            header.createCell(5).setCellValue("Owner");
-            header.createCell(5).setCellValue("Permission");
-            header.createCell(6).setCellValue("Date Conditions");
+            List<String> headers = new ArrayList<>();
+            if (!jobs.isEmpty()) {
+                headers.addAll(jobs.get(0).toMap().keySet());
+            }
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < headers.size(); i++) {
+                headerRow.createCell(i).setCellValue(headers.get(i));
+            }
+
             int rowNum = 1;
             for (AutosysJob job : jobs) {
+                Map<String, Object> data = job.toMap();
                 Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(job.getJobName());
-                row.createCell(1).setCellValue(job.getJobType());
-                row.createCell(2).setCellValue(job.getBoxName());
-                row.createCell(3).setCellValue(job.getCommand());
-                row.createCell(4).setCellValue(job.getMachine());
-                row.createCell(5).setCellValue(job.getOwner());
-                row.createCell(6).setCellValue(String.valueOf(job.getDateCondition()));
+                int i = 0;
+
+                for (String key : headers) {
+                    Object value = data.get(key);
+                    if (value instanceof Boolean b) {
+                        row.createCell(i++).setCellValue(b);
+                    } else if (value != null) {
+                        row.createCell(i++).setCellValue(value.toString());
+                    } else {
+                        row.createCell(i++).setCellValue("");
+                    }
+                }
+            }
+            for (int i = 0; i < headers.size(); i++) {
+                sheet.autoSizeColumn(i);
             }
 
             try (FileOutputStream fileOut = new FileOutputStream(filePath)) {

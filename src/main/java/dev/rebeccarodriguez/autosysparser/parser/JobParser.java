@@ -47,29 +47,58 @@ public class JobParser {
                         case "box_name":
                             currentJob.setBoxName(value);
                             break;
-                        case "description":
-                            currentJob.setDescription(value);
-                            break;
                         case "command":
                             currentJob.setCommand(value);
-                            break;
-                        case "owner":
-                            currentJob.setOwner(value);
+                            if (currentJob.getCommand().toLowerCase().contains("keyword")) {
+                                int chr = currentJob.getCommand().toLowerCase().indexOf("-f");
+                                String feedID = currentJob.getCommand().substring(chr + 3);
+                                currentJob.setFeedID(feedID);
+                            }
                             break;
                         case "machine":
                             currentJob.setMachine(value);
                             break;
-                        case "condition":
-                            currentJob.setCondition(value);
+                        case "owner":
+                            currentJob.setOwner(value);
+                            break;
+                        case "permission":
+                            currentJob.setPermission(value);
                             break;
                         case "date_conditions":
                             currentJob.setDateCondition(value);
                             break;
+                        case "run_calendar":
+                            currentJob.setRunCalendar(value);
+                            break;
+                        case "exclude_calendar":
+                            currentJob.setExcludeCalendar(value);
+                            break;
                         case "days_of_week":
                             currentJob.setDaysOfWeek(value);
                             break;
+                        case "start_mins":
+                            currentJob.setStartMins(value);
+                            break;
                         case "start_times":
                             currentJob.setStartTime(value);
+                            break;
+                        case "run_window":
+                            currentJob.setRunWindow(value);
+                            break;
+                        case "condition":
+                            currentJob.setCondition(value);
+                            break;
+                        case "description":
+                            currentJob.setDescription(value);
+                            break;
+                        case "n_retrys":
+                            currentJob.setnRetrys(value);
+                            break;
+                        case "term_run_time":
+                            currentJob.setTermRunTime(value);
+                            break;
+                        case "box_terminator":
+                            currentJob.setBoxTerminator(value);
                             break;
                         case "std_out_file":
                             currentJob.setStdOutFile(value);
@@ -83,11 +112,38 @@ public class JobParser {
                         case "alarm_if_fail":
                             currentJob.setAlarmIfFail(value);
                             break;
+                        case "profile":
+                            currentJob.setProfile(value);
+                            break;
+                        case "alarm_if_terminated":
+                            currentJob.setAlarmIfTerminated(value);
+                            break;
+                        case "timezone":
+                            currentJob.setTimezone(value);
+                            break;
+                        case "group":
+                            currentJob.setGroup(value);
+                            break;
+                        case "application":
+                            currentJob.setApplicaiton(value);
+                            break;
+                        case "send_notification":
+                            currentJob.setSendNotification(value);
+                            break;
+                        case "notification_msg":
+                            currentJob.setEmailMessage(value);
+                            break;
+                        case "envvars":
+                            currentJob.setEnvvars(value);
+                            break;
+                        case "watch_file":
+                            currentJob.setWatchFile(value);
+                            break;
+                        case "watch_interval":
+                            currentJob.setWatchInterval(value);
+                            break;
                         case "notification_emailaddress":
                             currentJob.setEmailAddress(value);
-                            break;
-                        case "notification_subject":
-                            currentJob.setEmailMessage(value);
                             break;
                     }
                 }
