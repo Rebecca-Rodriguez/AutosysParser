@@ -10,7 +10,7 @@ import java.util.List;
 
 public class JobParser {
 
-    public List<AutosysJob> parseJilFile(String filePath) {
+    public List<AutosysJob> parseJilFile(String filePath, List<String> filterJobs) {
         List<AutosysJob> jobs = new ArrayList<>();
         AutosysJob currentJob = null;
 
@@ -25,7 +25,7 @@ public class JobParser {
                 }
 
                 if (line.startsWith("insert_job:")) {
-                    if (currentJob != null) {
+                    if (currentJob != null && shouldInclude(currentJob, filterJobs)) {
                         jobs.add(currentJob);
                     }
                     currentJob = new AutosysJob();
@@ -150,7 +150,7 @@ public class JobParser {
             }
 
             // Add last job
-            if (currentJob != null) {
+            if (currentJob != null && shouldInclude(currentJob, filterJobs)) {
                 jobs.add(currentJob);
             }
 
@@ -159,5 +159,9 @@ public class JobParser {
         }
 
         return jobs;
+    }
+
+    private boolean shouldInclude(AutosysJob currentJob, List<String> filterJobs) {
+        return filterJobs == null || filterJobs.isEmpty() || filterJobs.contains(currentJob.getJobName());
     }
 }
